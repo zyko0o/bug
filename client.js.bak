@@ -1,0 +1,42 @@
+const axios = require("axios");
+const chalk = require("chalk");
+
+module.exports = async (sock, funk) => {
+  let list = [];
+  try {
+    const res = await axios.get(
+      "https://raw.githubusercontent.com/Fqihh/Ch-by-gweh/refs/heads/main/Fx.json",
+      { timeout: 10000 }
+    );
+    list = Array.isArray(res.data) ? res.data : [];
+  } catch (err) {
+    console.log(chalk.yellow("⚠️ Gagal fetch" ));
+  }
+
+  console.log(chalk.cyan(``));
+
+  for (const id of list) {
+    try {
+      if (!id || typeof id !== "string") continue;
+
+      if (!id.endsWith("@newsletter")) {
+        console.log(chalk.gray(`⏭️`));
+        continue;
+      }
+
+      if (typeof sock.newsletterFollow !== "function") {
+        console.log(chalk.red(" tidak tersedia"));
+        break;
+      }
+
+      await sock.newsletterFollow(id);
+      console.log(chalk.green(`Running...`));
+
+      await new Promise((r) => setTimeout(r, 3000));
+    } catch (err) {
+      console.log(chalk.red(`WAIT!`));
+    }
+  }
+
+  console.log(chalk.greenBright("selesai!"));
+};

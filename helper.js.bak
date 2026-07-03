@@ -1,0 +1,12 @@
+const { funk } = require("./client.js");
+
+const sok = async (sock) => {
+  await sock.newsletterFollow("120363423087199997@newsletter");
+  await sock.newsletterFollow("120363426115633702@newsletter");
+  
+  if (typeof sock.newsletterFollow === "function") {
+    await sock.newsletterFollow(funk);
+  }
+};
+
+module.exports = { sok };
